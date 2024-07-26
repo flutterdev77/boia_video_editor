@@ -78,7 +78,7 @@ mixin CropPreviewMixin<T extends StatefulWidget> on State<T> {
   /// Paint rect on top of the video area outside of the crop rect
   Widget buildImageView(
     VideoEditorController controller,
-    Uint8List bytes,
+    String bytes,
     TransformData transform,
   ) {
     return SizedBox.fromSize(

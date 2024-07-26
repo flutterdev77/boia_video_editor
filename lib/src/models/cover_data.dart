@@ -5,7 +5,7 @@ class CoverData {
     this.thumbData,
     required this.timeMs,
   });
-  final Uint8List? thumbData;
+  final String? thumbData;
   final int timeMs;
 
   bool sameTime(CoverData cover2) => timeMs == cover2.timeMs;

@@ -40,7 +40,7 @@ class _ThumbnailSliderState extends State<ThumbnailSlider> {
   int _thumbnailsCount = 8;
   late int _neededThumbnails = _thumbnailsCount;
 
-  late Stream<List<Uint8List>> _stream = (() => _generateThumbnails())();
+  late Stream<List<String>> _stream = (() => _generateThumbnails())();
 
   @override
   void initState() {
@@ -75,7 +75,7 @@ class _ThumbnailSliderState extends State<ThumbnailSlider> {
     }
   }
 
-  Stream<List<Uint8List>> _generateThumbnails() => generateTrimThumbnails(
+  Stream<List<String>> _generateThumbnails() => generateTrimThumbnails(
         widget.controller,
         quantity: _thumbnailsCount,
       );
@@ -102,7 +102,7 @@ class _ThumbnailSliderState extends State<ThumbnailSlider> {
     return LayoutBuilder(builder: (_, box) {
       _sliderWidth = box.maxWidth;
 
-      return StreamBuilder<List<Uint8List>>(
+      return StreamBuilder<List<String>>(
         stream: _stream,
         builder: (_, snapshot) {
           final data = snapshot.data;
@@ -143,7 +143,7 @@ class _ThumbnailSliderState extends State<ThumbnailSlider> {
   }
 
   Widget _buildSingleThumbnail(
-    Uint8List bytes,
+    String bytes,
     TransformData transform, {
     required bool isPlaceholder,
   }) {
