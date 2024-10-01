@@ -647,38 +647,42 @@ class _TrimSliderState extends State<TrimSlider>
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   final image = snapshot.data as ui.Image;
-                  return GestureDetector(
-                    onHorizontalDragStart: _onHorizontalDragStart,
-                    onHorizontalDragUpdate: _onHorizontalDragUpdate,
-                    onHorizontalDragEnd: _onHorizontalDragEnd,
-                    behavior: HitTestBehavior.opaque,
-                    child: AnimatedBuilder(
-                      animation: Listenable.merge([
-                        widget.controller,
-                        widget.controller.video,
-                      ]),
-                      builder: (_, __) {
-                        return RepaintBoundary(
-                          child: CustomPaint(
-                            size: Size.fromHeight(widget.height),
-                            painter: TrimSliderPainter(
-                              _rect,
-                              _getVideoPosition(),
-                              widget.controller.trimStyle,
-                              isTrimming: widget.controller.isTrimming,
-                              isTrimmed: widget.controller.isTrimmed,
-                              image: image,
+                  return Padding(
+                    // Added spacing for better touch detection
+                    padding: const EdgeInsets.all(8),
+                    child: GestureDetector(
+                      onHorizontalDragStart: _onHorizontalDragStart,
+                      onHorizontalDragUpdate: _onHorizontalDragUpdate,
+                      onHorizontalDragEnd: _onHorizontalDragEnd,
+                      behavior: HitTestBehavior.opaque,
+                      child: AnimatedBuilder(
+                        animation: Listenable.merge([
+                          widget.controller,
+                          widget.controller.video,
+                        ]),
+                        builder: (_, __) {
+                          return RepaintBoundary(
+                            child: CustomPaint(
+                              size: Size.fromHeight(widget.height),
+                              painter: TrimSliderPainter(
+                                _rect,
+                                _getVideoPosition(),
+                                widget.controller.trimStyle,
+                                isTrimming: widget.controller.isTrimming,
+                                isTrimmed: widget.controller.isTrimmed,
+                                image: image,
+                              ),
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
                   );
                 } else {
                   return const SizedBox.shrink();
                 }
               },
-            )
+            ),
           ],
         ),
       );
