@@ -1,12 +1,11 @@
 import 'dart:math';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:video_editor/src/controller.dart';
 import 'package:video_editor/src/widgets/trim/thumbnail_slider.dart';
 import 'package:video_editor/src/widgets/trim/trim_slider_painter.dart';
-import 'dart:ui' as ui;
 
 enum _TrimBoundaries { left, right, inside, progress }
 
@@ -616,10 +615,9 @@ class _TrimSliderState extends State<TrimSlider>
                 physics: widget.scrollPhysics,
                 scrollDirection: Axis.horizontal,
                 child: Padding(
-                  padding: EdgeInsets.only(
-                    left: _horizontalMargin,
-                    right: _horizontalMargin,
-                  ),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16), // Fixed padding
+
                   child: Column(
                     children: [
                       ClipRRect(
@@ -647,14 +645,14 @@ class _TrimSliderState extends State<TrimSlider>
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   final image = snapshot.data as ui.Image;
-                  return Padding(
+                  return Positioned.fill(
                     // Added spacing for better touch detection
-                    padding: const EdgeInsets.all(8),
                     child: GestureDetector(
                       onHorizontalDragStart: _onHorizontalDragStart,
                       onHorizontalDragUpdate: _onHorizontalDragUpdate,
                       onHorizontalDragEnd: _onHorizontalDragEnd,
-                      behavior: HitTestBehavior.opaque,
+                      behavior:
+                          HitTestBehavior.translucent, // Changed to translucent
                       child: AnimatedBuilder(
                         animation: Listenable.merge([
                           widget.controller,
