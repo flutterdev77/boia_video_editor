@@ -11,7 +11,7 @@ import 'dart:ui' as ui;
 enum _TrimBoundaries { left, right, inside, progress }
 
 /// Spacing to touch detection, touch target should be minimum 24 x 24 dp
-const _touchMargin = 24.0;
+const _touchMargin = 80.0;
 
 class TrimSlider extends StatefulWidget {
   /// Slider that trim video length.
@@ -314,9 +314,9 @@ class _TrimSliderState extends State<TrimSlider>
         height: _rect.height,
       );
       Rect rightTouch = Rect.fromCenter(
-        center: Offset(_rect.right + _edgesTouchMargin / 2, _rect.height / 2),
-        width: _edgesTouchMargin,
-        height: _rect.height,
+        center: Offset(_rect.right + _edgesTouchMargin, _rect.height / 2),
+        width: _edgesTouchMargin * 3, // Tripled width
+        height: _rect.height * 3, // Tripled height
       );
       final progressTouch = Rect.fromCenter(
         center: Offset(progressTrim, _rect.height / 2),
@@ -647,42 +647,38 @@ class _TrimSliderState extends State<TrimSlider>
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   final image = snapshot.data as ui.Image;
-                  return Padding(
-                    // Added spacing for better touch detection
-                    padding: const EdgeInsets.all(8),
-                    child: GestureDetector(
-                      onHorizontalDragStart: _onHorizontalDragStart,
-                      onHorizontalDragUpdate: _onHorizontalDragUpdate,
-                      onHorizontalDragEnd: _onHorizontalDragEnd,
-                      behavior: HitTestBehavior.opaque,
-                      child: AnimatedBuilder(
-                        animation: Listenable.merge([
-                          widget.controller,
-                          widget.controller.video,
-                        ]),
-                        builder: (_, __) {
-                          return RepaintBoundary(
-                            child: CustomPaint(
-                              size: Size.fromHeight(widget.height),
-                              painter: TrimSliderPainter(
-                                _rect,
-                                _getVideoPosition(),
-                                widget.controller.trimStyle,
-                                isTrimming: widget.controller.isTrimming,
-                                isTrimmed: widget.controller.isTrimmed,
-                                image: image,
-                              ),
+                  return GestureDetector(
+                    onHorizontalDragStart: _onHorizontalDragStart,
+                    onHorizontalDragUpdate: _onHorizontalDragUpdate,
+                    onHorizontalDragEnd: _onHorizontalDragEnd,
+                    behavior: HitTestBehavior.opaque,
+                    child: AnimatedBuilder(
+                      animation: Listenable.merge([
+                        widget.controller,
+                        widget.controller.video,
+                      ]),
+                      builder: (_, __) {
+                        return RepaintBoundary(
+                          child: CustomPaint(
+                            size: Size.fromHeight(widget.height),
+                            painter: TrimSliderPainter(
+                              _rect,
+                              _getVideoPosition(),
+                              widget.controller.trimStyle,
+                              isTrimming: widget.controller.isTrimming,
+                              isTrimmed: widget.controller.isTrimmed,
+                              image: image,
                             ),
-                          );
-                        },
-                      ),
+                          ),
+                        );
+                      },
                     ),
                   );
                 } else {
                   return const SizedBox.shrink();
                 }
               },
-            ),
+            )
           ],
         ),
       );
